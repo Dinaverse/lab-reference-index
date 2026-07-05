@@ -1,79 +1,242 @@
-# 🧪 My Sovereign Lab
+# 🧪 My Sovereign Lab — Infrastructure Reference
 
-> *A self-hosted, bare-metal computing environment engineered for resilience, data sovereignty, and high-performance local AI inference with zero cloud dependencies.*
-
----
-
-## 🎯 Vision
-
-This laboratory is the physical and logical backbone of all my infrastructure projects. It converts repurposed enterprise-grade hardware into a distributed, multi-node computing cluster capable of running local LLMs, security tooling, network monitoring, and containerized services entirely on-premises.
+> **NOTICE:** This repository is a reference hub. For the complete professional overview of all projects and portfolio, visit **[Dinaverse](https://github.com/Dinaverse/Dinaverse)** — the master documentation.
 
 ---
 
-## 🖥️ Node Inventory
+## 🎯 Purpose
 
-| Node | Hostname | Role | Hardware |
-|------|----------|------|----------|
-| 🧠 | **Arch Linux** | GPU Compute / LLM Inference | 4x NVIDIA P106-100 (24 GB VRAM) |
-| 🔴 | **Kali Linux** | Master Orchestrator / SecOps | x86 workstation |
-| 🥧 | **Raspberry Pi** | IDS / DNS / Network Services | ARM SBC |
-| 🖧 | **Dell Server** | Gateway / Monitoring | Enterprise rack unit |
-| 💾 | **AMD Machine** | Storage Worker / CPU Compute | Canwork189 |
+This repository exists as a **detailed technical reference** for the sovereign laboratory infrastructure. It complements the main documentation with:
 
----
-
-## 🔗 Ecosystem Repositories
-
-| Repository | Description |
-|------------|-------------|
-| [`arch-linux-multi-gpu-llm`](https://github.com/Dinaverse/arch-linux-multi-gpu-llm) | 4x GPU cluster for local LLM inference |
-| [`sovereign-ai-infrastructure`](https://github.com/Dinaverse/sovereign-ai-infrastructure) | Architecture & node documentation |
-| [`local-ai-sovereign-stack`](https://github.com/Dinaverse/local-ai-sovereign-stack) | Docker-based AI stack (Ollama + Grafana) |
-| [`sovereign-lab-orchestration`](https://github.com/Dinaverse/sovereign-lab-orchestration) | Orchestration principles & IaC methodology |
-| [`cybersecurity-lab-automation`](https://github.com/Dinaverse/cybersecurity-lab-automation) | Security automation & monitoring scripts |
-| [`sovereign-ai-security`](https://github.com/Dinaverse/sovereign-ai-security) | AI-driven security tooling |
+- Node specifications and hardware details
+- Agent deployment configurations
+- Security procedures and hardening steps
+- Historical reports and operational logs
+- Advanced troubleshooting procedures
 
 ---
 
-## ⚙️ Core Infrastructure Stack
+## ⚠️ For Complete Overview, Start Here
 
-```text
-🐧 OS Layer        ::  Arch Linux, Kali Linux, Debian, Raspbian
-🐳 Containers      ::  Docker, Docker Compose
-🤖 AI Runtime      ::  Ollama (local LLM), CUDA, Multi-GPU VRAM pooling
-📊 Monitoring      ::  Prometheus, Grafana, custom Python agents
-🛡️ Security        ::  Suricata IDS, custom log analytics, Morpheus (AI SecOps)
-🌐 Networking      ::  VLAN segmentation, custom DNS, SSH hardening
+| Document | Purpose |
+|----------|---------|
+| **[Dinaverse Master README](https://github.com/Dinaverse/Dinaverse)** | Complete portfolio and project map |
+| **[sovereign-ai-infrastructure](https://github.com/Dinaverse/sovereign-ai-infrastructure)** | Central architecture documentation |
+| **[local-ai-sovereign-stack](https://github.com/Dinaverse/local-ai-sovereign-stack)** | Docker AI stack deployment |
+
+---
+
+## 🖥️ Node Specifications
+
+### Kali Station (Master Orchestrator)
+- **CPU:** Intel Xeon E5-2630 v4 @ 2.20GHz
+- **RAM:** 62 GiB
+- **Storage:** 909 GiB total
+- **Role:** Master orchestration, SecOps hub, MCP bridge
+- **Status:** ✅ Online
+
+### Arch Cluster (GPU Compute)
+- **CPU:** Intel Core i5-6500 @ 3.20GHz
+- **RAM:** 15 GiB
+- **Storage:** 119 GiB total
+- **GPUs:** 4× NVIDIA P106-100 (24 GB VRAM total)
+- **Role:** LLM inference, multi-GPU compute
+- **Status:** ✅ Online
+
+### Raspberry Pi (Network Services)
+- **CPU:** Cortex-A53
+- **RAM:** ~1 GiB
+- **Storage:** 29 GiB total
+- **Role:** IDS (Suricata), DNS, network monitoring
+- **Status:** ✅ Online
+
+### Dell Server (Gateway & Monitoring)
+- **CPU:** Dell enterprise processor
+- **RAM:** 16+ GiB
+- **Storage:** 1TB+
+- **Role:** Internet gateway, Prometheus/Grafana
+- **Status:** ✅ Online
+
+### AMD Canwork189 (Storage & CPU)
+- **CPU:** AMD FX-8320 Eight-Core Processor
+- **RAM:** 7.2 GiB
+- **Storage:** 46 GiB root + 159 GiB /local
+- **Role:** Distributed storage, CPU-bound workloads
+- **Status:** ✅ Online
+
+---
+
+## 🔧 Agent Deployment (Arch Cluster)
+
+Agents are deployed in `~/agents/` and managed as systemd services.
+
+| Agent | Function | Execution | Status |
+|-------|----------|-----------|--------|
+| **Security-Ops** | Log monitoring & analysis | Continuous daemon | ✅ Running |
+| **Net-Analyzer** | Network reconnaissance | Hourly schedule | ✅ Active |
+| **R&D Agent** | Training & experimentation | Manual trigger | ✅ Ready |
+
+### Agent Commands
+
+```bash
+# Check agent status
+systemctl status security-ops-agent
+systemctl status net-analyzer-agent
+
+# View logs
+journalctl -u security-ops-agent -f
+journalctl -u net-analyzer-agent -f
+
+# Restart agent
+systemctl restart security-ops-agent
 ```
 
 ---
 
-## 🏗️ Lab Topology
+## 🛡️ Security & Hardening
 
+### SSH Configuration
+
+All nodes use key-based authentication with passwordless access:
+
+```bash
+# SSH key for lab: ~/.ssh/id_lab
+chmod 600 ~/.ssh/id_lab
+
+# SSH config for quick access
+Host arch-gpu
+  HostName <ARCH_CLUSTER_IP>
+  User dina
+  IdentityFile ~/.ssh/id_lab
+  Port 22
 ```
-[Internet]
-     │
-  [Dell Gateway / Monitoring]
-     │
-  [LAN Switch]
-     ├── [Kali Master Orchestrator]
-     ├── [Arch GPU Cluster (4x P106-100)]
-     ├── [Raspberry Pi IDS / DNS]
-     └── [AMD Canwork189 Storage / CPU]
+
+### Firewall Rules
+
+- **Incoming:** Only SSH (22), Prometheus (9090 - internal), Ollama (11434 - internal)
+- **Outgoing:** DNS (53), NTP (123), HTTP/HTTPS (80/443 for updates)
+- **Internal:** Unrestricted inter-node communication
+
+### Hardening Procedures
+
+1. **SSH hardening** — Disabled root login, password auth, empty passwords
+2. **Firewall rules** — UFW / iptables configured per node
+3. **Log monitoring** — Suricata IDS active on Raspberry Pi
+4. **Network segmentation** — VLAN isolation for different workloads
+
+---
+
+## 📊 Monitoring & Observability
+
+### Prometheus Scrape Targets
+
+| Target | Port | Interval |
+|--------|------|----------|
+| Arch-GPU (node metrics) | 9100 | 15s |
+| Arch-GPU (Ollama) | 11434 | 15s |
+| Dell-Gateway (node metrics) | 9100 | 15s |
+| Raspberry-Pi (Suricata) | 9114 | 15s |
+
+### Grafana Dashboards
+
+- **AI Metrics** — LLM inference performance
+- **GPU Performance** — VRAM, compute efficiency
+- **System Health** — CPU, memory, disk across all nodes
+- **Security Events** — IDS alerts, failed logins
+- **Service Status** — Docker container health
+
+---
+
+## 🔄 Persistence & Automation
+
+### Systemd Services
+
+All critical services are registered as systemd units:
+
+```bash
+# List lab services
+systemctl list-units --type=service | grep lab
+
+# Enable service on reboot
+systemctl enable ollama
+systemctl enable security-ops-agent
+
+# Manual service restart
+systemctl restart ollama
+```
+
+### Docker Container Management
+
+```bash
+# View running containers
+docker-compose ps
+
+# View logs
+docker-compose logs -f ollama
+
+# Restart container
+docker-compose restart ollama
 ```
 
 ---
 
-## 📈 Status
+## 📁 Directory Structure
 
-| Service | Status |
-|---------|--------|
-| Multi-GPU LLM Inference (Qwen 3.5:27B) | ✅ Operational |
-| Grafana / Prometheus Monitoring | ✅ Operational |
+```
+my-sovereign-lab/
+├── README.md                          (this file)
+├── docs/
+│   ├── LAB_COMPREHENSIVE_FINAL_REPORT.md
+│   ├── LAB_OPERATIONS_REFERENCE.md
+│   ├── SYNCTHING_TROUBLESHOOTING.md
+│   └── SECURITY_PROCEDURES.md
+├── hardware/
+│   └── HARDWARE_BOM.md
+├── configuration/
+│   ├── ssh-config.example
+│   ├── firewall-rules.sh
+│   └── systemd-units/
+└── monitoring/
+    ├── prometheus-targets.yaml
+    └── grafana-dashboards/
+```
+
+---
+
+## 📖 Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| **[SSH & Network Security](docs/SECURITY_PROCEDURES.md)** | Hardening & access control |
+| **[Operations Reference](docs/LAB_OPERATIONS_REFERENCE.md)** | Daily operations procedures |
+| **[Syncthing Troubleshooting](docs/SYNCTHING_TROUBLESHOOTING.md)** | Remote access issues |
+| **[Comprehensive Final Report](docs/LAB_COMPREHENSIVE_FINAL_REPORT.md)** | Historical status & migration |
+
+---
+
+## 🔗 Related Repositories
+
+| Repository | Purpose |
+|------------|---------|
+| **[Dinaverse](https://github.com/Dinaverse/Dinaverse)** | Master README & project overview |
+| **[sovereign-ai-infrastructure](https://github.com/Dinaverse/sovereign-ai-infrastructure)** | Architecture documentation |
+| **[local-ai-sovereign-stack](https://github.com/Dinaverse/local-ai-sovereign-stack)** | Docker stack |
+| **[cybersecurity-lab-automation](https://github.com/Dinaverse/cybersecurity-lab-automation)** | Security automation |
+
+---
+
+## ✅ Lab Status (2026-07-05)
+
+| Component | Status |
+|-----------|--------|
+| Multi-GPU LLM Inference | ✅ Operational |
+| Grafana / Prometheus | ✅ Operational |
 | Suricata IDS | ✅ Operational |
-| Docker Containerized Services | ✅ Operational |
-| n8n Workflow Automation | ✅ Operational |
+| Docker Services | ✅ Operational |
+| n8n Workflows | ✅ Operational |
+| Security Agents | ✅ Running |
+| All Nodes | ✅ Online |
 
 ---
 
-*Built with a research-and-development mindset repurposing hardware, not renting cloud.*
+*Infrastructure is constantly evolving. See main Dinaverse repository for latest portfolio.*
