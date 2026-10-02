@@ -1,4 +1,4 @@
-# 🧪 My Sovereign Lab — Infrastructure Reference
+# Lab Reference Index
 
 > **NOTICE:** This repository is a reference hub. For the complete professional overview of all projects and portfolio, visit **[Dinaverse](https://github.com/Dinaverse/Dinaverse)** — the master documentation.
 
