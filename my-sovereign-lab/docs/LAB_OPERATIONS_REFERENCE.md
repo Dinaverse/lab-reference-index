@@ -10,12 +10,12 @@ Communication across the lab relies exclusively on the encrypted Tailscale tunne
 
 | Host Name | Role | Tailscale IP | SSH Method |
 | :--- | :--- | :--- | :--- |
-| Kali Station | Orchestrator/Controller | 100.72.84.77 | SSH CA/Key |
-| Arch Cluster | Compute IA (4x P106-100) | 100.69.65.101 | SSH CA/Key |
-| Raspberry Pi | Pi-hole/Services | 100.80.155.45 | SSH CA/Key |
+| Kali Station | Orchestrator/Controller | <KALI_TAILSCALE_IP> | SSH CA/Key |
+| Arch Cluster | Compute IA (4x P106-100) | <ARCH_CLUSTER_TAILSCALE_IP> | SSH CA/Key |
+| Raspberry Pi | Pi-hole/Services | <RASPBERRY_PI_TAILSCALE_IP> | SSH CA/Key |
 | Dell Precision | Monitoring/Orchestrator | N/A | SSH CA/Key |
-| Canwork189 | Storage/General | 100.118.171.116 | SSH CA/Key |
-| Canwork164 | Storage/General | 100.65.232.81 | SSH CA/Key |
+| Canwork189 | Storage/General | <CANWORK189_TAILSCALE_IP> | SSH CA/Key |
+| Canwork164 | Storage/General | <CANWORK164_TAILSCALE_IP> | SSH CA/Key |
 
 ## 3. Security Posture (Hardening)
 - **Transport:** Encrypted tunnel (Tailscale) is mandatory for all remote access.
